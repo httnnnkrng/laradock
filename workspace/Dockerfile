@@ -1773,6 +1773,19 @@ RUN set -eux; \
       php -m  | grep -q 'event' \
 ;fi
 
+############################################################################
+## PHP GRPC EXTENSION:
+############################################################################
+
+ARG INSTALL_PHPGRPC=false
+
+RUN if [ ${INSTALL_PHPGRPC} = true ]; then \
+  # Install Php Grpc Extension
+  pecl install grpc && \
+  echo "extension=grpc.so" >> /etc/php/${LARADOCK_PHP_VERSION}/mods-available/grpc.ini && \
+  ln -s /etc/php/${LARADOCK_PHP_VERSION}/mods-available/grpc.ini /etc/php/${LARADOCK_PHP_VERSION}/cli/conf.d/20-grpc.ini && \
+  php -m | grep -q 'grpc' \
+;fi
 
 
 #
